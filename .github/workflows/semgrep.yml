@@ -1,21 +1,17 @@
-name: Run Semgrep on Pull Request
+name: Semgrep Scan on Test Project
 
-on: [pull_request]
+on:
+  pull_request: # Runs Semgrep when a PR is created
+  push: # Runs Semgrep on push (optional)
 
 jobs:
   semgrep:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-
-    - name: Install Semgrep
-      run: pip install semgrep
-
-    - name: Run Semgrep
-      run: semgrep --config .semgrep.yml
+      - name: Run Semgrep
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: "p/security-audit"  # Uses built-in security rules
