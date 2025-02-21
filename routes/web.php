@@ -41,4 +41,34 @@ Route::middleware(['auth','admin'])->group(function () {
     
 });
 
+Route::get('/xss', function () {
+    $name = request()->input('name');
+
+    // BAD: Unsanitized output
+    return "<h1>Hello, $name</h1>";
+});
+
+Route::get('/include', function () {
+    $file = request()->input('file');
+
+    // BAD: Allows arbitrary file inclusion
+    include($file);
+});
+
+Route::get('/set-cookie', function () {
+    // BAD: No secure flags
+    setcookie("auth_token", "123456", time()+3600);
+});
+
+Route::get('/hash', function () {
+    // BAD: Using MD5
+    $password = "mypassword";
+    return md5($password);
+});
+
+Route::post('/user-test', function (Request $request) {
+    // BAD: Allows mass assignment vulnerability
+    User::create($request->all());
+});
+
 require __DIR__.'/auth.php';

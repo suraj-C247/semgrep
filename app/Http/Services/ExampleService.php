@@ -10,4 +10,11 @@ class ExampleService
         $password = 'admin@123'; // Hardcoded credentials
         // Connection logic
     }
+
+    public function test()
+    {
+        $dbUser = "root";
+        $dbPassword = "password123";
+        return "DB User: $dbUser";
+    }
 }
