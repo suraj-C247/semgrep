@@ -11,22 +11,33 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Run Semgrep - Security Audit
+      - name: Run Semgrep - All Security Rules
         uses: returntocorp/semgrep-action@v1
         with:
-          config: "p/security-audit"
-          json: semgrep-security-audit.json
+          config: |
+            p/security-audit
+            p/phpcs-security-audit
+            p/php 
+            p/php-laravel
+            p/sql-injection
+            p/secrets
+            p/xss
+            p/javascript
+          json: semgrep-report.json
 
-      - name: Run Semgrep - Laravel Rules
-        uses: returntocorp/semgrep-action@v1
+      - name: Upload Semgrep Report
+        uses: actions/upload-artifact@v4
         with:
-          config: "p/php-laravel"
-          json: semgrep-laravel.json
+          name: semgrep-report
+          path: semgrep-report.json
 
-      - name: Upload Semgrep Reports
-        uses: actions/upload-artifact@v4  # ✅ Updated to v4
+      - name: Post Semgrep Findings as PR Comments
+        if: github.event_name == 'pull_request'
+        uses: mshick/add-pr-comment@v2
         with:
-          name: semgrep-reports
-          path: |
-            semgrep-security-audit.json
-            semgrep-laravel.json
+          message: |
+            🔍 **Semgrep Security Scan Report** 🔍
+            - This PR was automatically scanned using **Semgrep** for security issues.
+            - Findings are available in the **Semgrep Report** artifact.
+            - If vulnerabilities were detected, please review and fix them before merging.
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
