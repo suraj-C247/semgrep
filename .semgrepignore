@@ -1,9 +1,0 @@
-# Example .semgrepignore content
-# Ignore vendor directory
-vendor/
-
-# Ignore node_modules directory
-node_modules/
-
-# Ignore specific files
-# path/to/ignored/file.php

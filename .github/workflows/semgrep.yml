@@ -30,4 +30,3 @@ jobs:
           path: |
             semgrep-security-audit.json
             semgrep-laravel.json
-            semgrep-custom.json
