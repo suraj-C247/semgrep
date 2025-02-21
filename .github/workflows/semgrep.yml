@@ -4,6 +4,10 @@ on:
   pull_request:  # Runs Semgrep when a PR is created
   push:  # Runs Semgrep on push (optional)
 
+permissions:  # Explicitly grant permission to write PR comments
+  contents: read
+  pull-requests: write
+
 jobs:
   semgrep:
     runs-on: ubuntu-latest
