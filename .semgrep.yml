@@ -1,0 +1,30 @@
+rules:
+- id: php-eval-detection
+  patterns:
+  - pattern: eval(...)
+  message: "Avoid using eval() as it can lead to security vulnerabilities."
+  languages: [php]
+  severity: ERROR
+
+- id: php-sql-injection
+  patterns:
+  - pattern-inside: $QUERY = "... $X ..."
+  - pattern-inside: DB::select($QUERY)
+  message: "Avoid using raw SQL queries with user input to prevent SQL injection."
+  languages: [php]
+  severity: ERROR
+
+- id: php-hardcoded-credentials
+  patterns:
+  - pattern: $X = 'admin'
+  - pattern: $X = 'password'
+  message: "Avoid hardcoding credentials in your code."
+  languages: [php]
+  severity: ERROR
+
+- id: php-debug-code
+  patterns:
+  - pattern: dd(...)
+  message: "Remove debug code before committing."
+  languages: [php]
+  severity: WARNING

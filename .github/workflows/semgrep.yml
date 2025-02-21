@@ -1,8 +1,8 @@
-name: Semgrep Scan on Test Project
+name: Semgrep Scan on PR
 
 on:
-  pull_request: # Runs Semgrep when a PR is created
-  push: # Runs Semgrep on push (optional)
+  pull_request:  # Runs Semgrep when a PR is created
+  push:  # Runs Semgrep on push (optional)
 
 jobs:
   semgrep:
@@ -11,7 +11,30 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Run Semgrep
+      - name: Run Semgrep - Security Audit
         uses: returntocorp/semgrep-action@v1
         with:
-          config: "p/security-audit"  # Uses built-in security rules
+          config: "p/security-audit"
+          json: semgrep-security-audit.json
+
+      - name: Run Semgrep - Laravel Rules
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: "p/php-laravel"
+          json: semgrep-laravel.json
+
+      - name: Run Semgrep - Custom Rules
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: ".semgrep.yml"
+          json: semgrep-custom.json
+
+      - name: Upload Semgrep Reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: semgrep-reports
+          path: |
+            semgrep-security-audit.json
+            semgrep-laravel.json
+            semgrep-custom.json
+
