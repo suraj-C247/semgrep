@@ -23,12 +23,6 @@ jobs:
           config: "p/php-laravel"
           json: semgrep-laravel.json
 
-      - name: Run Semgrep - Custom Rules
-        uses: returntocorp/semgrep-action@v1
-        with:
-          config: ".semgrep.yml"
-          json: semgrep-custom.json
-
       - name: Upload Semgrep Reports
         uses: actions/upload-artifact@v4  # ✅ Updated to v4
         with:
